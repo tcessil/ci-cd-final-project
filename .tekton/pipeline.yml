@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: example-pipeline
+spec:
+  workspaces:
+  - name: output
+  tasks:
+  - name: cleanup
+    taskRef:
+      name: cleanup
+    workspaces:
+    - name: source
+      workspace: output
+  - name: git-clone
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: output
+  - name: flake8-linting
+    taskRef:
+      name: flake8
+    workspaces:
+    - name: source
+      workspace: output
+  - name: nose-tests
+    taskRef:
+      name: nose
+    workspaces:
+    - name: source
+      workspace: output
+  - name: buildah-task
+    taskRef:
+      name: buildah
+    workspaces:
+    - name: source
+      workspace: output

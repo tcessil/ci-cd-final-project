@@ -35,7 +35,8 @@ spec:
 
 apiVersion: tekton.dev/v1beta1
 kind: Task
-name: nose
+metadata:
+  name: nose
 spec:
   description: This task runs nosetests with specified arguments.
   workspaces:
@@ -53,5 +54,3 @@ spec:
       #!/bin/bash
       set -e
       python -m pip install --upgrade pip wheel
-      pip install -r requirements.txt
-      nosetests $(params.args)

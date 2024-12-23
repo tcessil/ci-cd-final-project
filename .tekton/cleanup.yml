@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  workspaces:
+  - name: source
+  steps:
+  - name: cleanup
+    image: alpine
+    script: |
+      #!/bin/sh
+      set -eu
+      echo "Removing all files from ${WORKSPACE_SOURCE_PATH} ..."
+      if [ -d "${WORKSPACE_SOURCE_PATH}" ] ; then
+        rm -rf "${WORKSPACE_SOURCE_PATH:?}"/*
+        rm -rf "${WORKSPACE_SOURCE_PATH}"/.[!.]*
+        rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
+      fi
